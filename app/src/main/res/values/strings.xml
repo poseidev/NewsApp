@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">News from The Guardian</string>
+    <string name="dateFormat">MMM dd, yyyy</string>
+</resources>
