@@ -7,6 +7,7 @@ public class News {
     private String mSection;
     private String mAuthor;
     private String mUrl;
+    private String mImage;
     private Date mPublishDate;
 
     public News() {
@@ -29,6 +30,10 @@ public class News {
         mUrl = url;
     }
 
+    public void setImage(String image) {
+        mImage = image;
+    }
+
     public void setPublishDate(Date publishDate) {
         mPublishDate = publishDate;
     }
@@ -47,6 +52,10 @@ public class News {
 
     public String getUrl() {
         return mUrl;
+    }
+
+    public String getImage() {
+        return mImage;
     }
 
     public Date getPublishDate() {

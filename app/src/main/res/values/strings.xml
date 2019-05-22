@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">News Now</string>
-    <string name="dateFormat">MMM dd, yyyy</string>
-    <string name="menuSettings">Sort By</string>
+    <string name="dateFormat">MMM dd, yyyy h:mm:ss aa</string>
+    <string name="menuSettings">Settings</string>
+    <string name="settingsActivityTitle">News Settings</string>
+
+    <string name="settingsSortByLatest">Latest</string>
+    <string name="settingsSortByOldest">Oldest</string>
+
+    <string name="settingsSortByValueLatest">newest</string>
+    <string name="settingsSortByValueOldest">oldest</string>
+    <string name="settingsSortByKey">sortBy</string>
+    <string name="settingsSortByTitle">Sort by</string>
 </resources>
