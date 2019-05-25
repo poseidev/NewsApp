@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="settingsSortByOptions">
-        <item>@string/settingsSortByLatest</item>
-        <item>@string/settingsSortByOldest</item>
+        <item>@string/settingsOrderByLatest</item>
+        <item>@string/settingsOrderByRelevance</item>
     </string-array>
 
     <string-array name="settingsSortByActualFields">
-        <item>@string/settingsSortByValueLatest</item>
-        <item>@string/settingsSortByValueOldest</item>
+        <item>@string/settingsOrderByValueLatest</item>
+        <item>@string/settingsOrderByValueRelevance</item>
     </string-array>
 </resources>

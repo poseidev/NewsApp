@@ -4,11 +4,22 @@
     <string name="menuSettings">Settings</string>
     <string name="settingsActivityTitle">News Settings</string>
 
-    <string name="settingsSortByLatest">Latest</string>
-    <string name="settingsSortByOldest">Oldest</string>
+    <string name="settingsOrderByLatest">Latest</string>
+    <string name="settingsOrderByRelevance">Relevance</string>
 
-    <string name="settingsSortByValueLatest">newest</string>
-    <string name="settingsSortByValueOldest">oldest</string>
-    <string name="settingsSortByKey">sortBy</string>
-    <string name="settingsSortByTitle">Sort by</string>
+    <string name="settingsOrderByValueLatest">newest</string>
+    <string name="settingsOrderByValueRelevance">relevance</string>
+
+    <string name="settingsOrderByTitle">Sort by</string>
+    <string name="settingsOrderByKey" translatable="false">order-by</string>
+    <string name="settingsOrderByDefault" translatable="false">newest</string>
+
+    <string name="settingsPageSizeTitle">Max no. of news articles (min of 5, max of 50)</string>
+    <string name="settingsPageSizeKey" translatable="false">page-size</string>
+    <string name="settingsPageSizeDefault" translatable="false">10</string>
+    <string name="apiFieldAPIKey">api-key</string>
+    <string name="apiFieldShowFields">show-fields</string>
+    <string name="apiFieldSearchText">q</string>
+    <string name="apiFieldShowFieldsThumbnail">thumbnail</string>
+    <string name="apiFieldAPIKeyDefault">test</string>
 </resources>

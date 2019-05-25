@@ -2,11 +2,12 @@ package com.example.android.newsapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -19,13 +20,20 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>{
+public class NewsActivity extends AppCompatActivity
+        implements
+            LoaderManager.LoaderCallbacks<List<News>>,
+            SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private static final int  NEWS_LOADER_ID = 1;
 
     private NewsAdapter mAdapter;
 
-    private void setProgressBarVisiblity(boolean isVisible) {
+    private void setProgressBarClarity(boolean isVisible) {
         ProgressBar progressBar = findViewById(R.id.progressBar);
 
         int visibility = isVisible ? View.VISIBLE : View.GONE;
@@ -76,20 +84,87 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         setNewsURLs(newsListView);
     }
 
+    private void initializePreferenceListener() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        preferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private List<Map<String, String>> getSettings() {
+        List<Map<String, String>> settings = new ArrayList<>();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String orderBy = preferences.getString(getString(R.string.settingsOrderByKey), getString(R.string.settingsOrderByDefault));
+        String pageSize = preferences.getString(getString(R.string.settingsPageSizeKey), getString(R.string.settingsPageSizeDefault));
+
+        String orderByKey = getString(R.string.settingsOrderByKey);
+        String pageSizeKey = getString(R.string.settingsPageSizeKey);
+
+        Map<String, String> orderByMap = new HashMap<>();
+        Map<String, String> pageSizeMap = new HashMap<>();
+
+        orderByMap.put(orderByKey, orderBy);
+        pageSizeMap.put(pageSizeKey, pageSize);
+
+        settings.add(orderByMap);
+        settings.add(pageSizeMap);
+
+        return settings;
+    }
+
+    private String getUrl(String baseUrl, String searchText) {
+        Uri uri = Uri.parse(baseUrl);
+
+        Uri.Builder uriBuilder = uri.buildUpon();
+
+        boolean isEmptySearchText = TextUtils.isEmpty(searchText);
+        if(!isEmptySearchText) {
+            uriBuilder.appendQueryParameter(getString(R.string.apiFieldSearchText), searchText);
+        }
+
+        List<Map<String, String>> settings = getSettings();
+        for (Map<String, String> settingItem : settings) {
+
+            String key = settingItem.keySet().toArray()[0].toString();
+            String value = settingItem.get(key);
+
+            // If search text is NOT PROVIDED results are sorted by latest date
+            if(isEmptySearchText &&
+                    key.equals(getString(R.string.settingsOrderByKey)) &&
+                    value.equals(getString(R.string.settingsOrderByValueRelevance))) {
+
+                value = getString(R.string.settingsOrderByValueLatest);
+            }
+
+            uriBuilder.appendQueryParameter(key, value);
+        }
+
+        uriBuilder.appendQueryParameter(getString(R.string.apiFieldShowFields), getString(R.string.apiFieldShowFieldsThumbnail));
+        uriBuilder.appendQueryParameter(getString(R.string.apiFieldAPIKey), getString(R.string.apiFieldAPIKeyDefault));
+
+        return uriBuilder.toString();
+    }
+
+    private String getUrl(String baseUrl) {
+        return getUrl(baseUrl, "");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_activity);
 
         if(!isConnected()) {
-            setProgressBarVisiblity(false);
+            setProgressBarClarity(false);
 
             return;
         }
 
         initializeNewsList();
 
-        LoaderManager.getInstance(this).initLoader(1, null, this).forceLoad();
+        initializePreferenceListener();
+
+        LoaderManager.getInstance(this).initLoader(NEWS_LOADER_ID, null, this).forceLoad();
     }
 
     @Override
@@ -115,12 +190,15 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-         return new NewsLoader(NewsActivity.this, Constants.NEWS_REQUEST_URL);
+
+        String url = getUrl(Constants.NEWS_REQUEST_URL);
+
+        return new NewsLoader(NewsActivity.this, url);
     }
 
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> news) {
-        setProgressBarVisiblity(false);
+        setProgressBarClarity(false);
 
         if(news == null) {
             return;
@@ -132,5 +210,10 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<List<News>> loader) {
         mAdapter.clear();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        LoaderManager.getInstance(this).restartLoader(NEWS_LOADER_ID, null, this);
     }
 }
