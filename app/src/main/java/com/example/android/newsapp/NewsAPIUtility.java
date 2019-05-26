@@ -110,15 +110,19 @@ public final class NewsAPIUtility {
             String webUrl = newsItem.getString(Constants.NEWS_API_FIELD_URL);
             String dateString = newsItem.getString(Constants.NEWS_API_FIELD_DATE);
 
-            JSONObject fields = newsItem.getJSONObject("fields");
-
-            String image = fields.getString(Constants.NEWS_API_FIELD_IMAGE);
-
             News news = new News();
             news.setTitle(title);
             news.setSection(section);
             news.setUrl(webUrl);
-            news.setImage(image);
+
+            try {
+                JSONObject fields = newsItem.getJSONObject("fields");
+
+                String image = fields.getString(Constants.NEWS_API_FIELD_IMAGE);
+
+                news.setImage(image);
+            } catch (JSONException e) {}
+
 
             Date publishDate = formatDate(dateString);
 
