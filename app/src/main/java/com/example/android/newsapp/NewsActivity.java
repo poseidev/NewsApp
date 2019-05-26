@@ -17,9 +17,14 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,6 +101,29 @@ public class NewsActivity extends AppCompatActivity
         boolean isConnected = networkInfo != null && networkInfo.isConnected();
 
         return isConnected;
+    }
+
+    private void restartLoader() {
+        LoaderManager.getInstance(this).restartLoader(NEWS_LOADER_ID, null, this);
+    }
+
+    private void hideKeyboard() {
+        View searchButton = findViewById(R.id.searchButton);
+        InputMethodManager imManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imManager.hideSoftInputFromWindow(searchButton.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    private void initializeSearchButtonListener() {
+        View searchButton = findViewById(R.id.searchButton);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restartLoader();
+
+                hideKeyboard();
+            }
+        });
     }
 
     private void initializeNewsList() {
@@ -184,6 +212,8 @@ public class NewsActivity extends AppCompatActivity
             return;
         }
 
+        initializeSearchButtonListener();
+
         initializeNewsList();
 
         initializePreferenceListener();
@@ -215,7 +245,15 @@ public class NewsActivity extends AppCompatActivity
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
 
-        String url = getUrl(Constants.NEWS_REQUEST_URL);
+        TextView searchTextView = findViewById(R.id.searchText);
+
+        String searchKeyword = searchTextView.getText().toString();
+
+        String url = TextUtils.isEmpty(searchKeyword) ?
+                getUrl(Constants.NEWS_REQUEST_URL) :
+                getUrl(Constants.NEWS_REQUEST_URL, searchKeyword);
+
+       /* String url = getUrl(Constants.NEWS_REQUEST_URL);*/
 
         return new NewsLoader(NewsActivity.this, url);
     }
@@ -240,6 +278,6 @@ public class NewsActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        LoaderManager.getInstance(this).restartLoader(NEWS_LOADER_ID, null, this);
+        restartLoader();
     }
 }
