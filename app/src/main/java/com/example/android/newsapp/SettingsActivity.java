@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
                     TextUtils.isDigitsOnly(settingValue)) {
                 int pageSize = Integer.parseInt(settingValue);
 
-                if(pageSize < 5 || pageSize > 50) {
+                if(pageSize < 1 || pageSize > 50) {
                     return false;
                 }
             }

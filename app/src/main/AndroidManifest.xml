@@ -19,7 +19,8 @@
                 android:value=".NewsActivity"
                 />
         </activity>
-        <activity android:name=".NewsActivity">
+        <activity android:name=".NewsActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -21,5 +21,8 @@
     <string name="apiFieldShowFields">show-fields</string>
     <string name="apiFieldSearchText">q</string>
     <string name="apiFieldShowFieldsThumbnail">thumbnail</string>
-    <string name="apiFieldAPIKeyDefault">test</string>
+    <string name="apiFieldAPIKeyDefault">5d218c4b-a272-4c43-90fa-bfaa8cb825f4</string>
+    <string name="confirmationOpenNews">Open news in web browser?</string>
+    <string name="hintSearch">Search news here</string>
+    <string name="labelSearch">Search</string>
 </resources>
