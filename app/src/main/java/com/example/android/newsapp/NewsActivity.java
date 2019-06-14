@@ -104,6 +104,10 @@ public class NewsActivity extends AppCompatActivity
     }
 
     private void restartLoader() {
+        mAdapter.clear();
+
+        setProgressBarClarity(true);
+
         LoaderManager.getInstance(this).restartLoader(NEWS_LOADER_ID, null, this);
     }
 

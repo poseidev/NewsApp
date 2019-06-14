@@ -1,5 +1,8 @@
 package com.example.android.newsapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -118,10 +121,18 @@ public final class NewsAPIUtility {
             try {
                 JSONObject fields = newsItem.getJSONObject("fields");
 
-                String image = fields.getString(Constants.NEWS_API_FIELD_IMAGE);
+                String imageURL = fields.getString(Constants.NEWS_API_FIELD_IMAGE);
+                Bitmap bitmap = null;
 
-                news.setImage(image);
+                if(!TextUtils.isEmpty(imageURL)) {
+                    InputStream inputStream = new URL(imageURL).openStream();
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                }
+
+                news.setImage(bitmap);
             } catch (JSONException e) {}
+            catch (MalformedURLException e) {}
+            catch (IOException e) {}
 
 
             Date publishDate = formatDate(dateString);

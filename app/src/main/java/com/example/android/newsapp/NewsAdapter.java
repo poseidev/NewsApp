@@ -67,13 +67,17 @@ public class NewsAdapter extends ArrayAdapter<News> {
         // Image
 
 
-        String imageUrl = currentNews.getImage();
+        Bitmap image = currentNews.getImage();
+        if(image != null) {
+            ImageView imageView = listItemView.findViewById(R.id.imageView);
+            imageView.setImageBitmap(image);
+        }
 
-        if(!TextUtils.isEmpty(imageUrl)) {
+       /* if(!TextUtils.isEmpty(imageUrl)) {
             ImageView imageView = listItemView.findViewById(R.id.imageView);
             ImageDownloader imageDownloader = new ImageDownloader(imageView);
             imageDownloader.execute(imageUrl);
-        }
+        }*/
 
         return listItemView;
     }

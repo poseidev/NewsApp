@@ -1,5 +1,7 @@
 package com.example.android.newsapp;
 
+import android.graphics.Bitmap;
+
 import java.util.Date;
 
 public class News {
@@ -7,7 +9,7 @@ public class News {
     private String mSection;
     private String mAuthor;
     private String mUrl;
-    private String mImage;
+    private Bitmap mImage;
     private Date mPublishDate;
 
     public News() {
@@ -30,7 +32,7 @@ public class News {
         mUrl = url;
     }
 
-    public void setImage(String image) {
+    public void setImage(Bitmap image) {
         mImage = image;
     }
 
@@ -54,7 +56,7 @@ public class News {
         return mUrl;
     }
 
-    public String getImage() {
+    public Bitmap getImage() {
         return mImage;
     }
 
