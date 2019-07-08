@@ -129,7 +129,9 @@ public final class NewsAPIUtility {
                     bitmap = BitmapFactory.decodeStream(inputStream);
                 }
 
+                news.setImageUrl(imageURL);
                 news.setImage(bitmap);
+
             } catch (JSONException e) {}
             catch (MalformedURLException e) {}
             catch (IOException e) {}

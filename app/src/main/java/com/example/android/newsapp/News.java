@@ -10,6 +10,7 @@ public class News {
     private String mAuthor;
     private String mUrl;
     private Bitmap mImage;
+    private String mImageUrl;
     private Date mPublishDate;
 
     public News() {
@@ -32,6 +33,10 @@ public class News {
         mUrl = url;
     }
 
+    public void setImageUrl(String imageUrl) {
+        mImageUrl = imageUrl;
+    }
+
     public void setImage(Bitmap image) {
         mImage = image;
     }
@@ -50,6 +55,10 @@ public class News {
 
     public String getAuthor() {
         return mAuthor;
+    }
+
+    public String getImageUrl() {
+        return mImageUrl;
     }
 
     public String getUrl() {

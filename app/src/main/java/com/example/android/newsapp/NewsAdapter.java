@@ -1,5 +1,8 @@
 package com.example.android.newsapp;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -65,19 +68,26 @@ public class NewsAdapter extends ArrayAdapter<News> {
         sectionText.setText(currentNews.getSection());
 
         // Image
-
-
-        Bitmap image = currentNews.getImage();
+        /*Bitmap image = currentNews.getImage();
         if(image != null) {
             ImageView imageView = listItemView.findViewById(R.id.imageView);
             imageView.setImageBitmap(image);
-        }
+        }*/
 
+        // For ImageDownloader AsyncTask
        /* if(!TextUtils.isEmpty(imageUrl)) {
             ImageView imageView = listItemView.findViewById(R.id.imageView);
             ImageDownloader imageDownloader = new ImageDownloader(imageView);
             imageDownloader.execute(imageUrl);
         }*/
+
+        String imageUrl = currentNews.getImageUrl();
+        ImageView imageView = listItemView.findViewById(R.id.imageView);
+
+        Glide.with(getContext())
+                .load(imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
 
         return listItemView;
     }
